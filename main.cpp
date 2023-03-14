@@ -979,7 +979,7 @@ int main(int argc, char ** argv) {
         // display text
         if (!input_noecho) {
             for (auto id : embd) {
-                printf("%s", vocab.id_to_token[id].c_str());
+                printf("%s", vocab.id_to_token[embd.back()].c_str());
             }
             fflush(stdout);
         }
