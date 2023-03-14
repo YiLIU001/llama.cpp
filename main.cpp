@@ -36,7 +36,7 @@ static const std::map<int, int> LLAMA_N_PARTS = {
 // default hparams (LLaMA 7B)
 struct llama_hparams {
     int32_t n_vocab = 32000;
-    int32_t n_ctx   = 512;   // this is provided as user input?
+    int32_t n_ctx   = 32;   // this is provided as user input?
     int32_t n_embd  = 4096;
     int32_t n_mult  = 256;
     int32_t n_head  = 32;
@@ -547,7 +547,7 @@ bool llama_eval(
 
     const int d_key = n_embd/n_head;
 
-    static size_t buf_size = 512u*1024*1024;
+    static size_t buf_size = 512u*1024*1024*100;
     static void * buf = malloc(buf_size);
 
     if (mem_per_token > 0 && mem_per_token*N > buf_size) {
@@ -926,8 +926,7 @@ int main(int argc, char ** argv) {
             t_predict_us += ggml_time_us() - t_start_us;
         }
 
-        n_past += embd.size();
-        embd.clear();
+        n_past++;
 
         if (embd_inp.size() <= input_consumed) {
             // out of user input, sample next token
